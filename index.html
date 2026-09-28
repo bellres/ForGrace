@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#FCE7A0">
+  <title>골라밥 - 오늘 뭐 먹지?</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FCE7A0'/><text x='50' y='70' font-size='60' text-anchor='middle'>🍚</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gaegu:wght@700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <button class="hamburger" id="menu-btn" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <h1 class="title">
+      무엇을 먹을지 고민인<br>
+      <span class="name" id="title-name">이은우님</span>을 위한
+    </h1>
+
+    <!-- 룰렛 -->
+    <section class="wheel-area">
+      <div class="wheel-wrap">
+        <div class="pointer"></div>
+        <canvas id="wheel" width="600" height="600" aria-label="메뉴 룰렛"></canvas>
+        <div class="hub"></div>
+      </div>
+      <button class="link-btn" id="edit-options">✏️ 옵션 편집</button>
+    </section>
+
+    <div class="controls">
+      <div class="counter">
+        <span class="counter-label">옵션 개수</span>
+        <button class="step-btn" id="minus" aria-label="옵션 줄이기">−</button>
+        <strong id="count">8개</strong>
+        <button class="step-btn" id="plus" aria-label="옵션 늘리기">+</button>
+      </div>
+      <button class="start-btn" id="start">START!</button>
+    </div>
+
+    <!-- 하단 카드 -->
+    <section class="cards">
+      <div class="chat-card">
+        <div class="chat-log" id="chat-log"></div>
+        <form class="chat-input" id="chat-form" autocomplete="off">
+          <span class="bowl" aria-hidden="true">
+            <svg viewBox="0 0 40 32"><path d="M7 15 Q7 5 20 5 Q33 5 33 15 Z" fill="#fff"/><path d="M3 14 H37 Q36 25 26 28 H14 Q4 25 3 14 Z" fill="#2F6FD6"/><rect x="13" y="27" width="14" height="3" rx="1.5" fill="#1E4FA3"/></svg>
+          </span>
+          <input type="text" id="chat-input" placeholder="골라밥에게 물어보기" maxlength="100">
+          <button type="button" class="mic" id="mic" aria-label="음성으로 말하기">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <rect x="9" y="3" width="6" height="11" rx="3"/>
+              <path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <button class="tile home" id="home-btn">
+        <span class="tile-label">집밥</span>
+        <span class="tile-icon" aria-hidden="true">
+          <svg viewBox="0 0 64 58">
+            <rect x="4" y="51" width="56" height="6" rx="3" fill="#7CC36A"/>
+            <path d="M12 27 L32 11 L52 27 V52 H12 Z" fill="#FBE8CF"/>
+            <path d="M6 29 L32 8 L58 29" fill="none" stroke="#E4573D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="32" cy="23" r="3.5" fill="#8EC5F0" stroke="#4A7DB0" stroke-width="1.2"/>
+            <rect x="17" y="34" width="10" height="18" fill="#F28C38"/>
+            <rect x="33" y="34" width="14" height="10" fill="#8EC5F0" stroke="#4A7DB0" stroke-width="1.5"/>
+            <line x1="40" y1="34" x2="40" y2="44" stroke="#4A7DB0" stroke-width="1.5"/>
+          </svg>
+        </span>
+      </button>
+      <button class="tile out" id="out-btn">
+        <span class="tile-label">외식</span>
+        <span class="tile-icon" aria-hidden="true">
+          <svg viewBox="0 0 72 44">
+            <path d="M6 30 V24 Q6 20 10 19 L18 17 L26 8 Q28 6 31 6 H58 Q62 6 63 10 L66 19 Q68 20 68 24 V30 Q68 33 65 33 H9 Q6 33 6 30 Z" fill="#4A86D0"/>
+            <path d="M22 18 L29 10 H40 V18 Z" fill="#CFE6FA"/>
+            <rect x="43" y="10" width="9" height="8" fill="#CFE6FA"/>
+            <path d="M55 10 H60 L62 18 H55 Z" fill="#CFE6FA"/>
+            <rect x="6" y="23" width="5" height="3" rx="1.5" fill="#FDE68A"/>
+            <circle cx="20" cy="33" r="7" fill="#2B2B2B"/><circle cx="20" cy="33" r="3" fill="#D9D9D9"/>
+            <circle cx="54" cy="33" r="7" fill="#2B2B2B"/><circle cx="54" cy="33" r="3" fill="#D9D9D9"/>
+          </svg>
+        </span>
+      </button>
+    </section>
+  </div>
+
+  <!-- 햄버거 메뉴 -->
+  <div class="drawer" id="drawer">
+    <nav class="drawer-panel">
+      <div class="drawer-head">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 40 32"><path d="M7 15 Q7 5 20 5 Q33 5 33 15 Z" fill="#fff"/><path d="M3 14 H37 Q36 25 26 28 H14 Q4 25 3 14 Z" fill="#2F6FD6"/><rect x="13" y="27" width="14" height="3" rx="1.5" fill="#1E4FA3"/></svg>
+        </div>
+        <div>
+          <strong>골라밥</strong>
+          <p>뭘 먹을지 고민될 땐, 골라밥!</p>
+        </div>
+      </div>
+      <button data-nav="name">👤 이름 바꾸기</button>
+      <button data-nav="options">✏️ 룰렛 옵션 편집</button>
+      <button data-nav="fridge">🧊 내 냉장고 / 집밥</button>
+      <button data-nav="out">🚙 외식 메뉴 추천</button>
+      <button data-nav="history">🕘 최근 결정한 메뉴</button>
+      <button data-nav="reset" class="danger">↺ 전체 초기화</button>
+    </nav>
+  </div>
+
+  <!-- 바텀 시트 -->
+  <div class="sheet-backdrop" id="sheet">
+    <div class="sheet" role="dialog" aria-modal="true">
+      <button class="sheet-close" id="sheet-close" aria-label="닫기">×</button>
+      <div id="sheet-body"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
